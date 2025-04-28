@@ -9,12 +9,21 @@ import {
 } from "../utils";
 import {
   type UserResult,
+  type SaUserResult,
   type RefreshTokenResult,
   getLogin,
+  getSaLogin,
+  getSaLogout,
   refreshTokenApi
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
-import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
+import {
+  type DataInfo,
+  setToken,
+  setSaToken,
+  removeToken,
+  userKey
+} from "@/utils/auth";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -86,6 +95,42 @@ export const useUserStore = defineStore({
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
       router.push("/login");
+    },
+    /** 登入 SA*/
+    async saLoginByUsername(data) {
+      return new Promise<SaUserResult>((resolve, reject) => {
+        getSaLogin(data)
+          .then(data => {
+            if (data.success) {
+              console.log("data <= ", data);
+              setSaToken(data.data);
+            }
+            resolve(data);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    /** 登出 SA*/
+    async saLogout() {
+      return new Promise<SaUserResult>((resolve, reject) => {
+        getSaLogout()
+          .then(data => {
+            if (data.success) {
+              this.username = "";
+              this.roles = [];
+              removeToken();
+              useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
+              resetRouter();
+              router.push("/login");
+            }
+            resolve(data);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     },
     /** 刷新`token` */
     async handRefreshToken(data) {

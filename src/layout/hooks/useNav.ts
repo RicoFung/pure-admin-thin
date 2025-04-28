@@ -100,6 +100,9 @@ export function useNav() {
   function logout() {
     useUserStoreHook().logOut();
   }
+  function saLogout() {
+    useUserStoreHook().saLogout();
+  }
 
   function backTopMenu() {
     router.push(getTopMenu()?.path);
@@ -148,6 +151,7 @@ export function useNav() {
     device,
     layout,
     logout,
+    saLogout,
     routers,
     $storage,
     isFullscreen,

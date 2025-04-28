@@ -115,6 +115,79 @@ export function setToken(data: DataInfo<Date>) {
   }
 }
 
+export function setSaToken(data: DataInfo<number>) {
+  let expires = 0;
+  const { accessToken, refreshToken } = data;
+  const { isRemembered, loginDay } = useUserStoreHook();
+  expires = data.expires; // 如果后端直接设置时间戳，将此处代码改为expires = data.expires，然后把上面的DataInfo<Date>改成DataInfo<number>即可
+  const cookieString = JSON.stringify({ accessToken, expires, refreshToken });
+
+  expires > 0
+    ? Cookies.set(TokenKey, cookieString, {
+        expires: (expires - Date.now()) / 86400000
+      })
+    : Cookies.set(TokenKey, cookieString);
+
+  console.log("Cookies expires <= ", expires);
+  console.log("Cookies token <= ", Cookies.get(TokenKey));
+  // debugger;
+  Cookies.set(
+    multipleTabsKey,
+    "true",
+    isRemembered
+      ? {
+          expires: loginDay
+        }
+      : {}
+  );
+
+  function setUserKey({ avatar, username, nickname, roles, permissions }) {
+    useUserStoreHook().SET_AVATAR(avatar);
+    useUserStoreHook().SET_USERNAME(username);
+    useUserStoreHook().SET_NICKNAME(nickname);
+    useUserStoreHook().SET_ROLES(roles);
+    useUserStoreHook().SET_PERMS(permissions);
+    storageLocal().setItem(userKey, {
+      refreshToken,
+      expires,
+      avatar,
+      username,
+      nickname,
+      roles,
+      permissions
+    });
+  }
+
+  if (data.username && data.roles) {
+    const { username, roles } = data;
+    setUserKey({
+      avatar: data?.avatar ?? "",
+      username,
+      nickname: data?.nickname ?? "",
+      roles,
+      permissions: data?.permissions ?? []
+    });
+  } else {
+    const avatar =
+      storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "";
+    const username =
+      storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "";
+    const nickname =
+      storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "";
+    const roles =
+      storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [];
+    const permissions =
+      storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [];
+    setUserKey({
+      avatar,
+      username,
+      nickname,
+      roles,
+      permissions
+    });
+  }
+}
+
 /** 删除`token`以及key值为`user-info`的localStorage信息 */
 export function removeToken() {
   Cookies.remove(TokenKey);

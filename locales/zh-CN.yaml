@@ -1,5 +1,6 @@
 buttons:
   pureLoginOut: 退出系统
+  pureSaLoginOut: 退出系统(SA)
   pureLogin: 登录
   pureOpenSystemSet: 打开系统配置
   pureReload: 重新加载
@@ -72,6 +73,14 @@ menus:
   purePermissionButton: 按钮权限
   purePermissionButtonRouter: 路由返回按钮权限
   purePermissionButtonLogin: 登录接口返回按钮权限
+  cart: 购物车
+  order: 订单
+  offlineOrder: 线下订单
+  unfinishedOrder: 未完成订单
+  finishedOrder: 已完成订单
+  o2oOrder: O2O订单
+  onlineOrder: 网络订单
+  onlineReturnOrder: 网络退单
 status:
   pureLoad: 加载中...
   pureMessage: 消息
@@ -81,11 +90,14 @@ status:
   pureNoNotify: 暂无通知
   pureNoTodo: 暂无待办
 login:
+  pureStorecode: 店号
   pureUsername: 账号
   purePassword: 密码
   pureLogin: 登录
+  saLogin: SA 登录
   pureLoginSuccess: 登录成功
   pureLoginFail: 登录失败
+  pureStorecodeReg: 请输入店号
   pureUsernameReg: 请输入账号
   purePassWordReg: 请输入密码
   purePassWordRuleReg: 密码格式应为8-18位数字、字母、符号的任意两种组合

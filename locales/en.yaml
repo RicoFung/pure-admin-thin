@@ -1,5 +1,6 @@
 buttons:
   pureLoginOut: LoginOut
+  puresALoginOut: SaLoginOut
   pureLogin: Login
   pureOpenSystemSet: Open System Configs
   pureReload: Reload
@@ -72,6 +73,14 @@ menus:
   purePermissionButton: Button Permission
   purePermissionButtonRouter: Route return button permission
   purePermissionButtonLogin: Login interface return button permission
+  cart: Cart
+  order: Order
+  offlineOrder: offlineOrder
+  unfinishedOrder: unfinishedOrder
+  finishedOrder: finishedOrder
+  o2oOrder: O2O Order
+  onlineOrder: Online Order
+  onlineReturnOrder: Online Return Order
 status:
   pureLoad: Loading...
   pureMessage: Message
@@ -81,11 +90,14 @@ status:
   pureNoNotify: No Notify
   pureNoTodo: No Todo
 login:
+  pureStorecode: Storecode
   pureUsername: Username
   purePassword: Password
   pureLogin: Login
+  saLogin: Login as SA
   pureLoginSuccess: Login Success
   pureLoginFail: Login Fail
+  pureStorecodeReg: Please enter storecode
   pureUsernameReg: Please enter username
   purePassWordReg: Please enter password
   purePassWordRuleReg: The password format should be any combination of 8-18 digits

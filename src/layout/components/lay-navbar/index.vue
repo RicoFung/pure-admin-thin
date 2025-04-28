@@ -18,6 +18,7 @@ const {
   layout,
   device,
   logout,
+  saLogout,
   onPanel,
   pureApp,
   username,
@@ -94,7 +95,7 @@ const { t, locale, translationCh, translationEn } = useTranslationLang();
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
-            <el-dropdown-item @click="logout">
+            <el-dropdown-item @click="saLogout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
                 style="margin: 5px"

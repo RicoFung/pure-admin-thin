@@ -40,30 +40,42 @@ const { title, getDropdownItemStyle, getDropdownItemClass } = useNav();
 const { locale, translationCh, translationEn } = useTranslationLang();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  storecode: "A018",
+  username: "A018",
+  password: "MO&CO888"
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
+  loading.value = true;
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      loading.value = true;
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .saLoginByUsername({
+          storecode: ruleForm.storecode,
+          username: ruleForm.username,
+          password: ruleForm.password
+        })
         .then(res => {
           if (res.success) {
             // 获取后端路由
-            return initRouter().then(() => {
-              router.push(getTopMenu(true).path).then(() => {
-                message(t("login.pureLoginSuccess"), { type: "success" });
-              });
+            initRouter().then(() => {
+              router.push(getTopMenu(true).path);
             });
           } else {
-            message(t("login.pureLoginFail"), { type: "error" });
+            message(res["msg"], { type: "error" });
           }
         })
-        .finally(() => (loading.value = false));
+        .catch(err => {
+          message("服务器异常！", { type: "error" });
+          console.error(err);
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    } else {
+      loading.value = false;
+      return fields;
     }
   });
 };
@@ -146,6 +158,26 @@ onBeforeUnmount(() => {
             :rules="loginRules"
             size="large"
           >
+            <Motion :delay="100">
+              <el-form-item
+                :rules="[
+                  {
+                    required: false,
+                    message: transformI18n($t('login.pureStorecodeReg')),
+                    trigger: 'blur'
+                  }
+                ]"
+                prop="storecode"
+              >
+                <el-input
+                  v-model="ruleForm.storecode"
+                  clearable
+                  :placeholder="t('login.pureStorecode')"
+                  :prefix-icon="useRenderIcon(User)"
+                />
+              </el-form-item>
+            </Motion>
+
             <Motion :delay="100">
               <el-form-item
                 :rules="[
